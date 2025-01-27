@@ -43,50 +43,40 @@ function VideoContainer() {
 
     if (loading) {
         return (
-            <span className="flex justify-center mt-20">
+            <div className="flex justify-center items-center h-[50vh]">
                 {icons.bigLoading}
-            </span>
+            </div>
         );
     }
 
     if (videos.length === 0) {
         return (
-            <div className="flex justify-center mt-[30vh]">
-                <div className="flex flex-col items-center">
-                    <FaVideo className="w-20 h-20" />
-                    <h1>No Videos Available</h1>
+            <div className="flex justify-center items-center h-[50vh]">
+                <div className="flex flex-col items-center text-gray-400">
+                    <FaVideo className="w-20 h-20 mb-4" />
+                    <h1 className="text-xl">No Videos Available</h1>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="overflow-auto">
-            <InfiniteScroll
-                dataLength={videos.length}
-                next={fetchMoreData}
-                hasMore={hasMore}
-                loader={
-                    <div className="flex justify-center h-7 mt-1">
-                        {icons.loading}
-                    </div>
-                }
-                scrollableTarget="scrollableDiv"
-            >
-                <div className="overflow-hidden mb-2 mx-2">
-                    <div
-                        className={`grid grid-cols-[repeat(auto-fit,_minmax(300px,_1fr))] gap-2 ${
-                            videos.length < 4 &&
-                            "sm:grid-cols-[repeat(auto-fit,_minmax(300px,0.34fr))] 2xl:grid-cols-[repeat(auto-fit,_minmax(300px,0.24fr))]"
-                        }`}
-                    >
-                        {videos.map((video) => (
-                            <VideoCard key={video._id} video={video} />
-                        ))}
-                    </div>
+        <InfiniteScroll
+            dataLength={videos.length}
+            next={fetchMoreData}
+            hasMore={hasMore}
+            loader={
+                <div className="flex justify-center py-4">
+                    {icons.loading}
                 </div>
-            </InfiniteScroll>
-        </div>
+            }
+        >
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
+                {videos.map((video) => (
+                    <VideoCard key={video._id} video={video} />
+                ))}
+            </div>
+        </InfiniteScroll>
     );
 }
 

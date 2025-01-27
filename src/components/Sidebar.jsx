@@ -188,7 +188,7 @@ function Sidebar() {
                         <span className={`${isCollapsed ? "" : "mr-2"}`}>
                             <FiHelpCircle className="w-6 h-6" />
                         </span>
-                        {!isCollapsed && "Support"}
+                        {!isCollapsed && "Contact"}
                     </li>
                 </NavLink>
             </ul>

@@ -17,24 +17,21 @@ function Search() {
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className="flex items-center w-full max-w-lg"
+            className="flex items-center w-full max-w-lg bg-white rounded-full shadow-lg overflow-hidden"
         >
-            {/* Input Wrapper */}
             <div className="relative flex-grow">
                 <Input
-                    className="w-full rounded-l-full px-10 py-2 border-2 border-green-500 focus:outline-none focus:ring-2 focus:ring-green-600"
-                    placeholder="Search"
+                    className="w-full pl-10 pr-4 py-3 border-0 focus:outline-none focus:ring-0"
+                    placeholder="Search videos, channels, and more..."
                     {...register("query", { required: true })}
                 />
-                {/* Search Icon */}
                 <GoSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
             </div>
 
-            {/* Submit Button */}
             <Button
                 type="submit"
                 bgColor="bg-green-600"
-                className="rounded-r-full px-6 py-2 text-white font-semibold hover:bg-green-700 transition-all"
+                className="rounded-r-full px-6 py-3 text-white font-semibold hover:bg-green-700 transition-all duration-300"
             >
                 Search
             </Button>

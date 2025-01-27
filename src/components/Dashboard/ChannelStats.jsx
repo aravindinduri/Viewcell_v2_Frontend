@@ -1,66 +1,87 @@
 import React, { useRef } from "react";
 import { useSelector } from "react-redux";
-import InfoBox from "./InfoBox";
-import { GoDeviceCameraVideo } from "react-icons/go";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
-import { FaRegUser, FaRegHeart } from "react-icons/fa";
+import { 
+  Video, 
+  Eye, 
+  Users, 
+  Heart, 
+  PlusCircle 
+} from 'lucide-react';
 import VideoForm from "./VideoForm";
-import { IoAdd } from "react-icons/io5";
+
+function InfoBox({ title, value, icon, bgColor = "bg-blue-100", textColor = "text-blue-600" }) {
+  return (
+    <div className={`${bgColor} ${textColor} p-5 rounded-xl shadow-md flex items-center space-x-4 transform transition-all duration-300 hover:scale-105`}>
+      <div className="bg-white/30 p-3 rounded-full">
+        {React.cloneElement(icon, { className: "w-8 h-8" })}
+      </div>
+      <div>
+        <p className="text-sm font-medium opacity-75">{title}</p>
+        <h3 className="text-2xl font-bold">{value}</h3>
+      </div>
+    </div>
+  );
+}
 
 function ChannelStats({ stats }) {
-    const user = useSelector((state) => state.auth.userData);
-    const uploadRef = useRef();
+  const user = useSelector((state) => state.auth.userData);
+  const uploadRef = useRef();
 
-    return (
-        <>
-            <div className="flex flex-wrap justify-between gap-4">
-                <div className="block">
-                    <h1 className="text-2xl font-bold">
-                        Welcome Back, {user?.fullName}
-                    </h1>
-                    <p className="text-sm text-gray-300">
-                        Track and manage your channel and videos.
-                    </p>
-                </div>
-                <div className="block">
-                    <VideoForm ref={uploadRef} />
-                    <button
-                        onClick={() => uploadRef.current?.open()}
-                        className="mt-4 inline-flex items-center gap-x-2 bg-pink-600 hover:bg-pink-600/90 border border-transparent rounded hover:border-white px-3 py-1.5 font-semibold text-white"
-                    >
-                        <IoAdd className="w-5 h-5" />
-                        Upload Video
-                    </button>
-                </div>
-            </div>
-            <div className="grid grid-cols-[repeat(auto-fit,_minmax(220px,_1fr))] gap-4">
-                <InfoBox
-                    key="total-videos"
-                    title="Total Videos"
-                    value={stats.totalVideos}
-                    icon={<GoDeviceCameraVideo className="h-6 w-6" />}
-                />
-                <InfoBox
-                    key="total-views"
-                    title="Total Views"
-                    value={stats.totalViews}
-                    icon={<MdOutlineRemoveRedEye className="h-6 w-6" />}
-                />
-                <InfoBox
-                    key="total-subscribers"
-                    title="Total Subscribers"
-                    value={stats.subscriberCount}
-                    icon={<FaRegUser className="h-6 w-6" />}
-                />
-                <InfoBox
-                    key="total-likes"
-                    title="Total Likes"
-                    value={stats.totalLikes}
-                    icon={<FaRegHeart className="h-6 w-6" />}
-                />
-            </div>
-        </>
-    );
+  return (
+    <div className="space-y-6 font-['Inter']">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            Welcome Back, {user?.fullName}
+          </h1>
+          <p className="text-sm text-gray-500">
+            Track and manage your channel and video performance.
+          </p>
+        </div>
+        <div>
+          <VideoForm ref={uploadRef} />
+          <button
+            onClick={() => uploadRef.current?.open()}
+            className="mt-4 inline-flex items-center gap-x-2 bg-blue-600 hover:bg-blue-700 rounded-lg px-4 py-2 text-white shadow-md transition-all duration-300 hover:shadow-lg"
+          >
+            <PlusCircle className="w-5 h-5 mr-2" />
+            Upload Video
+          </button>
+        </div>
+      </div>
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <InfoBox
+          title="Total Videos"
+          value={stats.totalVideos}
+          icon={<Video />}
+          bgColor="bg-blue-100"
+          textColor="text-blue-600"
+        />
+        <InfoBox
+          title="Total Views"
+          value={stats.totalViews}
+          icon={<Eye />}
+          bgColor="bg-green-100"
+          textColor="text-green-600"
+        />
+        <InfoBox
+          title="Subscribers"
+          value={stats.subscriberCount}
+          icon={<Users />}
+          bgColor="bg-purple-100"
+          textColor="text-purple-600"
+        />
+        <InfoBox
+          title="Total Likes"
+          value={stats.totalLikes}
+          icon={<Heart />}
+          bgColor="bg-pink-100"
+          textColor="text-pink-600"
+        />
+      </div>
+    </div>
+  );
 }
 
 export default ChannelStats;

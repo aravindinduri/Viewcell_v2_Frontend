@@ -30,7 +30,7 @@ function App() {
                 <div className="flex flex-col items-center justify-center mt-64">
                     <span>{icons.loading}</span>
                     <h1 className="text-3xl text-center mt-8 font-semibold">
-                        Please wait...
+                        View cell is Loading
                     </h1>
                     <h1 className="text-xl text-center mt-4">
                         Refresh the page if it takes too long
@@ -50,7 +50,7 @@ function App() {
                     <Outlet />
                 </main>
             </div>
-            <div id="popup-models" className="bg-pink-400 relative"></div>
+            <div id="popup-models" className="bg-green-400 relative"></div>
             <ToastContainer
                 position="top-right"
                 autoClose={2000}

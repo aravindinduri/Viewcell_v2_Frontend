@@ -1,14 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import getTimeDistanceToNow from "../../utils/getTimeDistance";
 import { useLocation, Link } from "react-router-dom";
-import { BiLike, BiSolidLike } from "react-icons/bi";
 import {
-    FaSave,
-    FaBell,
-    FaChevronDown,
-    FaChevronUp,
-    FaCheckCircle,
-} from "react-icons/fa";
+    BiLike,
+    BiSolidLike,
+    BiSave,
+    BiBell,
+    BiChevronDown,
+    BiChevronUp,
+    BiCheckCircle,
+} from "react-icons/bi";
+import { MdPlaylistAdd, MdOutlinePlaylistAddCheck } from "react-icons/md";
+import { HiOutlineThumbUp, HiThumbUp } from "react-icons/hi";
+import { IoIosNotifications, IoIosNotificationsOutline } from "react-icons/io";
 import Button from "../Button";
 import { useSelector, useDispatch } from "react-redux";
 import { setVideo } from "../../store/videoSlice";
@@ -178,185 +182,179 @@ function VideoInfo({ video }) {
     const playlists = useSelector((state) => state.playlists.playlists);
 
     return (
-        <div className="border rounded-xl px-4 py-2 ml-1 mt-2 bg-opacity-5">
-            <div className="flex justify-between">
+        <div className="border border-gray-700 rounded-xl px-6 py-4 mt-4 bg-blaxk-700 backdrop-blur-md">
+            <div className="flex justify-between items-start">
                 <div className="w-[80%]">
-                    <h1 className="text-[1.3rem] font-semibold">
+                    <h1 className="text-2xl font-bold text-white">
                         {video?.title}
                     </h1>
-                    <p className="text-[0.9rem] text-gray-300">{`${video?.views} views • ${timeDistance}`}</p>
+                    <p className="text-sm text-gray-400 mt-1">{`${video?.views} views • ${timeDistance}`}</p>
                 </div>
-                <div className="py-1 flex h-11">
-                    <>
-                        <LoginPopup
-                            ref={LoginLikePopupDialog}
-                            message="Login to Like this Video..."
-                            route={location.pathname}
-                        />
-                        <button
-                            onClick={toggleVideoLike}
-                            className={`px-3 border rounded-lg border-gray-400 flex items-center hover:bg-gray-900`}
-                        >
-                            <p className="mr-1">{video?.likesCount}</p>
-                            {video.isLiked ? (
-                                <BiSolidLike className="w-5 h-5" />
-                            ) : (
-                                <BiLike className="w-5 h-5" />
-                            )}
-                        </button>
-                    </>
-                    <>
-                        <PlaylistForm ref={dialog} route={location} />
-                        <LoginPopup
-                            ref={LoginSavePopupDialog}
-                            message="Login to add this video in playlist..."
-                            route={location.pathname}
-                        />
-                        <div ref={ref} className="relative">
-                            <Button
-                                onClick={() => {
-                                    if (authStatus) {
-                                        setMenu((prev) => !prev);
-                                    } else {
-                                        LoginSavePopupDialog.current.open();
-                                    }
-                                }}
-                                className="border rounded-lg border-gray-400 ml-2 flex items-center hover:bg-gray-900"
-                            >
-                                <FaSave className="mr-1" />
-                                Save
-                            </Button>
-                            {menu && (
-                                <div className="absolute right-0 top-full z-10 w-64 overflow-hidden rounded-lg bg-zinc-900 p-4 hover:block peer-focus:block">
-                                    <h3 className="mb-4 text-center text-lg font-semibold">
-                                        Save to playlist
-                                    </h3>
-                                    <ul className="mb-4">
-                                        {playlists?.length > 0 ? (
-                                            playlists?.map((item) => (
-                                                <li
-                                                    key={item._id}
-                                                    className="mb-2 last:mb-0 text-sm"
-                                                >
-                                                    <label
-                                                        htmlFor={
-                                                            "collection" +
-                                                            item._id
-                                                        }
-                                                        className="group/label inline-flex cursor-pointer items-center gap-x-3"
-                                                    >
-                                                        <input
-                                                            type="checkbox"
-                                                            id={
-                                                                "collection" +
-                                                                item._id
-                                                            }
-                                                            defaultChecked={
-                                                                item.isVideoPresent
-                                                            }
-                                                            onChange={(e) =>
-                                                                handlePlaylistVideo(
-                                                                    item._id,
-                                                                    e.target
-                                                                        .checked
-                                                                )
-                                                            }
-                                                        />
-                                                        {item.name}
-                                                    </label>
-                                                </li>
-                                            ))
-                                        ) : (
-                                            <div className="text-center">
-                                                No playlist created.
-                                            </div>
-                                        )}
-                                    </ul>
-                                    <div className="flex items-center justify-center">
-                                        <button
-                                            onClick={popupPlaylistForm}
-                                            className="items-center gap-x-2 bg-pink-500 hover:bg-pink-500/90 border border-transparent rounded-lg hover:border-white px-2 py-1 font-semibold text-black"
-                                        >
-                                            Create new Playlist
-                                        </button>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    </>
-                </div>
-            </div>
-            <div className="flex justify-between mt-2">
-                <div className="flex items-center">
-                    <div className="flex items-center">
-                        <Link to={`/channel/${video?.owner?.username}`}>
-                            <img
-                                className={`w-11 h-11 mr-3 rounded-full object-cover`}
-                                src={`${video?.owner?.avatar}`}
-                                alt={video?.owner?.fullName}
-                            />
-                        </Link>
-                        <div>
-                            <p className="text-gray-100 text-[0.9rem]">
-                                {video?.owner?.fullName}
-                            </p>
-                            <p className="text-gray-300  text-[0.8rem]">
-                                {formatSubscription(
-                                    video?.owner?.subscriberCount
-                                )}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <>
+                <div className="flex items-center space-x-3">
                     <LoginPopup
-                        ref={LoginSubsPopupDialog}
-                        message="Login to Subscribe..."
+                        ref={LoginLikePopupDialog}
+                        message="Login to Like this Video..."
                         route={location.pathname}
                     />
-                    <Button
-                        onClick={toggleSubscribe}
-                        className={`flex h-10 items-center px-2 rounded-full ${
-                            video.owner.isSubscribed
-                                ? "hover:bg-pink-700"
-                                : "hover:bg-gray-300"
-                        }`}
-                        textColor="text-black"
-                        bgColor={
-                            video?.owner?.isSubscribed
-                                ? "bg-pink-600"
-                                : "bg-gray-100"
-                        }
+                    <button
+                        onClick={toggleVideoLike}
+                        className={`flex items-center px-4 py-2 rounded-lg ${
+                            video.isLiked
+                                ? "bg-green-600 hover:bg-green-700"
+                                : "bg-gray-800 hover:bg-gray-700"
+                        } transition-all duration-300`}
                     >
-                        {video?.owner?.isSubscribed ? (
-                            <>
-                                <p className="mr-2 font-semibold">Subscribed</p>
-                                <FaCheckCircle />
-                            </>
+                        {video.isLiked ? (
+                            <HiThumbUp className="w-5 h-5 text-white" />
                         ) : (
-                            <>
-                                <p className="mr-2 font-semibold">Subscribe</p>
-                                <FaBell />
-                            </>
+                            <HiOutlineThumbUp className="w-5 h-5 text-white" />
                         )}
-                    </Button>
-                </>
+                        <span className="ml-2 text-white">
+                            {video?.likesCount}
+                        </span>
+                    </button>
+
+                    <LoginPopup
+                        ref={LoginSavePopupDialog}
+                        message="Login to add this video in playlist..."
+                        route={location.pathname}
+                    />
+                    <div ref={ref} className="relative">
+                        <Button
+                            onClick={() => {
+                                if (authStatus) {
+                                    setMenu((prev) => !prev);
+                                } else {
+                                    LoginSavePopupDialog.current.open();
+                                }
+                            }}
+                            className="flex items-center px-4 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition-all duration-300"
+                        >
+                            <BiSave className="w-5 h-5 text-white" />
+                            <span className="ml-2 text-white">Save</span>
+                        </Button>
+                        {menu && (
+                            <div className="absolute right-0 top-full z-10 w-64 mt-2 bg-gray-900/90 backdrop-blur-md rounded-lg shadow-lg p-4">
+                                <h3 className="mb-4 text-center text-lg font-semibold text-white">
+                                    Save to playlist
+                                </h3>
+                                <ul className="mb-4">
+                                    {playlists?.length > 0 ? (
+                                        playlists?.map((item) => (
+                                            <li
+                                                key={item._id}
+                                                className="mb-2 last:mb-0 text-sm text-white"
+                                            >
+                                                <label
+                                                    htmlFor={
+                                                        "collection" + item._id
+                                                    }
+                                                    className="group/label inline-flex cursor-pointer items-center gap-x-3"
+                                                >
+                                                    <input
+                                                        type="checkbox"
+                                                        id={"collection" + item._id}
+                                                        defaultChecked={
+                                                            item.isVideoPresent
+                                                        }
+                                                        onChange={(e) =>
+                                                            handlePlaylistVideo(
+                                                                item._id,
+                                                                e.target.checked
+                                                            )
+                                                        }
+                                                    />
+                                                    {item.name}
+                                                </label>
+                                            </li>
+                                        ))
+                                    ) : (
+                                        <div className="text-center text-gray-400">
+                                            No playlist created.
+                                        </div>
+                                    )}
+                                </ul>
+                                <div className="flex items-center justify-center">
+                                    <button
+                                        onClick={popupPlaylistForm}
+                                        className="flex items-center gap-x-2 bg-green-600 hover:bg-green-700 rounded-lg px-4 py-2 text-white font-semibold transition-all duration-300"
+                                    >
+                                        <MdPlaylistAdd className="w-5 h-5" />
+                                        Create new Playlist
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
             </div>
-            <div className="mt-4 border border-b-0 border-l-0 border-r-0 py-2 px-1 overflow-hidden flex justify-between">
-                <p className={`${showFullDescription ? "" : "line-clamp-1"}`}>
-                    {video.description ? video.description : "No description"}
-                </p>
-                <button
-                    onClick={toggleDescription}
-                    className="text-white ml-auto flex items-end"
+
+            <div className="flex justify-between items-center mt-6">
+                <div className="flex items-center">
+                    <Link to={`/channel/${video?.owner?.username}`}>
+                        <img
+                            className="w-12 h-12 rounded-full object-cover"
+                            src={video?.owner?.avatar}
+                            alt={video?.owner?.fullName}
+                        />
+                    </Link>
+                    <div className="ml-3">
+                        <p className="text-white font-semibold">
+                            {video?.owner?.fullName}
+                        </p>
+                        <p className="text-sm text-gray-400">
+                            {formatSubscription(video?.owner?.subscriberCount)}
+                        </p>
+                    </div>
+                </div>
+                <LoginPopup
+                    ref={LoginSubsPopupDialog}
+                    message="Login to Subscribe..."
+                    route={location.pathname}
+                />
+                <Button
+                    onClick={toggleSubscribe}
+                    className={`flex items-center px-4 py-2 rounded-full ${
+                        video.owner.isSubscribed
+                            ? "bg-green-600 hover:bg-green-700"
+                            : "bg-gray-800 hover:bg-gray-700"
+                    } transition-all duration-300`}
                 >
-                    {showFullDescription ? (
+                    {video.owner.isSubscribed ? (
                         <>
-                            <FaChevronUp className="ml-1" />
+                            <IoIosNotifications className="w-5 h-5 text-white" />
+                            <span className="ml-2 text-white">Subscribed</span>
                         </>
                     ) : (
                         <>
-                            <FaChevronDown className="ml-1" />
+                            <IoIosNotificationsOutline className="w-5 h-5 text-white" />
+                            <span className="ml-2 text-white">Subscribe</span>
+                        </>
+                    )}
+                </Button>
+            </div>
+
+            <div className="mt-6 border-t border-black pt-4">
+                <p
+                    className={`text-gray-300 ${
+                        showFullDescription ? "" : "line-clamp-2"
+                    }`}
+                >
+                    {video.description || "No description"}
+                </p>
+                <button
+                    onClick={toggleDescription}
+                    className="text-green-600 hover:text-green-700 mt-2 flex items-center transition-all duration-300"
+                >
+                    {showFullDescription ? (
+                        <>
+                            <BiChevronUp className="w-5 h-5" />
+                            <span className="ml-1">Show less</span>
+                        </>
+                    ) : (
+                        <>
+                            <BiChevronDown className="w-5 h-5" />
+                            <span className="ml-1">Show more</span>
                         </>
                     )}
                 </button>

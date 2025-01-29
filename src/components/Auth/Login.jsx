@@ -52,14 +52,56 @@ function Login() {
     };
 
     return (
-        <div className="h-screen w-full overflow-y-auto bg-[#121212] text-white">
-            <div className="mx-auto my-28 flex w-full max-w-sm flex-col px-4">
+        <div
+            className="h-screen w-full overflow-y-auto bg-[#121212] text-white relative"
+            style={{
+                backgroundColor: "#121212",
+            }}
+        >
+            {/* Animated SVG background */}
+            <div className="absolute inset-0 z-0">
+                <svg
+                    className="moving-svg"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 200 200"
+                    fill="none"
+                    preserveAspectRatio="xMidYMid meet"
+                    style={{ position: "absolute", top: 0, left: 0 }}
+                >
+                    <circle cx="50" cy="50" r="30" fill="rgba(255, 255, 255, 0.2)">
+                        <animate
+                            attributeName="cx"
+                            values="50;150;50"
+                            dur="10s"
+                            repeatCount="indefinite"
+                        />
+                    </circle>
+                    <circle cx="150" cy="150" r="25" fill="rgba(255, 255, 255, 0.3)">
+                        <animate
+                            attributeName="cy"
+                            values="150;50;150"
+                            dur="12s"
+                            repeatCount="indefinite"
+                        />
+                    </circle>
+                    <circle cx="200" cy="200" r="20" fill="rgba(255, 255, 255, 0.4)">
+                        <animate
+                            attributeName="cx"
+                            values="200;50;200"
+                            dur="8s"
+                            repeatCount="indefinite"
+                        />
+                    </circle>
+                </svg>
+            </div>
+
+            <div className="mx-auto my-28 flex w-full max-w-sm flex-col px-4 relative z-10">
                 <div className="mx-auto inline-block">
                     <Link to="/">
                         <Logo />
                     </Link>
                 </div>
-                <div className="my-4 w-full text-center text-xl font-semibold">
+                <div className="my-4 w-full text-center text-2xl font-bold text-gradient">
                     Log in to your account
                 </div>
                 {error && (
@@ -73,7 +115,7 @@ function Login() {
                         label="Email Address"
                         placeholder="Enter your email"
                         type="email"
-                        className="px-2 rounded-lg"
+                        className="input-field"
                         required
                         {...register("email", {
                             required: true,
@@ -98,7 +140,7 @@ function Login() {
                     )}
                     <Input
                         label="Password"
-                        className="px-2 rounded-lg"
+                        className="input-field"
                         className2="pt-5"
                         type="password"
                         placeholder="Enter your password"
@@ -115,8 +157,8 @@ function Login() {
                     <Button
                         type="submit"
                         disabled={loading}
-                        className="mt-5 disabled:cursor-not-allowed py-2 rounded-lg"
-                        bgColor={loading ? "bg-pink-800" : "bg-pink-600"}
+                        className="mt-5 disabled:cursor-not-allowed py-2 rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg"
+                        bgColor={loading ? "bg-green-800" : "bg-green-600"}
                     >
                         {loading ? <span>{icons.loading}</span> : "Sign in"}
                     </Button>

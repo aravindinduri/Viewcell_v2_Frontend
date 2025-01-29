@@ -4,122 +4,129 @@ import { useSelector } from "react-redux";
 import { icons } from "../../assets/Icons";
 import formatDate from "../../utils/formatDate";
 import axiosInstance from "../../utils/axios.helper";
-import { MdOutlineEmail } from "react-icons/md";
-import { IoGlobeOutline, IoEyeOutline } from "react-icons/io5";
-import { BsPlayBtn } from "react-icons/bs";
-import { BiLike } from "react-icons/bi";
-import { AiOutlineMessage } from "react-icons/ai";
+import { MdEmail } from "react-icons/md";
+import { IoGlobe, IoEye } from "react-icons/io5";
+import { BsPlayFill } from "react-icons/bs";
+import { BiSolidLike } from "react-icons/bi";
+import { AiFillMessage } from "react-icons/ai";
 import { GoInfo } from "react-icons/go";
 
 function AboutChannel() {
     const { username } = useParams();
     const user = useSelector((state) => state.user.user);
-    const [aboutChannel, setAboutChannel] = useState(null);
+    const [aboutChannel, setAboutChannel] = useState({
+        totalVideos: 0,
+        totalViews: 0,
+        totalLikes: 0,
+        totalTweets: 0,
+    });
     const [loading, setLoading] = useState(true);
 
     const getAboutChannel = async () => {
         try {
-            const response = await axiosInstance.get(
-                `/dashboard/stats/${user._id}`
-            );
+            const response = await axiosInstance.get(`/dashboard/stats/${user._id}`);
             if (response?.data?.success) {
-                setAboutChannel(response.data.data);
+                setAboutChannel({
+                    totalVideos: response.data.data.totalVideos || 0,
+                    totalViews: response.data.data.totalViews || 0,
+                    totalLikes: response.data.data.totalLikes || 0,
+                    totalTweets: response.data.data.totalTweets || 0,
+                });
             }
         } catch (error) {
             console.log("Error fetching channel details", error);
+        } finally {
+            setLoading(false);
         }
     };
 
     useEffect(() => {
-        getAboutChannel().then(() => {
-            setLoading(false);
-        });
+        getAboutChannel();
     }, []);
 
     if (loading) {
         return (
-            <span className="flex justify-center mt-20">
+            <div className="flex justify-center items-center h-screen">
                 {icons.bigLoading}
-            </span>
+            </div>
         );
     }
 
     return (
-        <div className="text-white px-6 py-4">
-            <div className="flex items-center mb-4">
-                <h2 className="text-3xl font-semibold">@{username}</h2>
-            </div>
-            <div className="mb-4">
-                <p className="ml-1">{user.description}</p>
-            </div>
-            <div className="mb-6">
-                <h3 className="text-2xl font-semibold mb-3">Channel Details</h3>
-                <p className="ml-1 mb-[6px] flex items-center gap-2">
-                    <MdOutlineEmail className="w-6 h-6" />
-                    <a
-                        href={`mailto:${user.email}`}
-                        className="text-blue-500 hover:text-blue-400 transition-colors"
-                    >
-                        {user.email}
-                    </a>
-                </p>
-                <p className="ml-1 mb-[6px] flex items-center gap-2">
-                    <IoGlobeOutline className="w-6 h-6" />
-                    <a
-                        href={`/channel/${username}`}
-                        className="text-blue-500 hover:text-blue-400 transition-colors"
-                    >
-                        {`https://streamify/channel/${username}`}
-                    </a>
-                </p>
-                <p className="ml-1 mb-[6px] flex items-center gap-2">
-                    <BsPlayBtn className="w-6 h-6" />
-                    <span>
-                        <span className="font-semibold">
-                            {aboutChannel.totalVideos}
-                        </span>{" "}
-                        Videos
-                    </span>
-                </p>
-                <p className="ml-1 mb-[6px] flex items-center gap-2">
-                    <IoEyeOutline className="w-6 h-6" />
-                    <span>
-                        <span className="font-semibold">
-                            {aboutChannel.totalViews}
-                        </span>{" "}
-                        Views
-                    </span>
-                </p>
-                <p className="ml-1 mb-[6px] flex items-center gap-2">
-                    <BiLike className="w-6 h-6" />
-                    <span>
-                        <span className="font-semibold">
-                            {aboutChannel.totalLikes}
-                        </span>{" "}
-                        Likes
-                    </span>
-                </p>
-                <p className="ml-1 mb-[6px] flex items-center gap-2">
-                    <AiOutlineMessage className="w-6 h-6" />
-                    <span>
-                        <span className="font-semibold">
-                            {aboutChannel.totalTweets}
-                        </span>{" "}
-                        Tweets
-                    </span>
-                </p>
-                <p className="ml-1 mb-[6px] flex items-center gap-2">
-                    <GoInfo className="w-6 h-6" />
-                    <span>
-                        Joined on{" "}
-                        <span className="font-semibold">
-                            {formatDate(user.createdAt)}
-                        </span>
-                    </span>
-                </p>
+        <div className="bg-black-100 min-h-screen flex justify-center items-center px-4 sm:px-6">
+            <div className="bg-opacity-60 bg-gray-800 backdrop-blur-lg shadow-2xl rounded-2xl p-6 sm:p-8 w-full max-w-lg">
+                <div className="text-center">
+                    <h2 className="text-3xl sm:text-4xl font-extrabold text-white">@{username}</h2>
+                    <p className="text-gray-300 mt-2 text-sm sm:text-base">
+                        {user.description || "No description available."}
+                    </p>
+                </div>
+
+                <div className="mt-6 space-y-4">
+                    <InfoRow 
+                        icon={<MdEmail className="w-6 h-6 text-blue-400" />} 
+                        text={
+                            user.email ? (
+                                <a 
+                                    href={`mailto:${user.email}`} 
+                                    className="text-blue-400 hover:text-blue-300 transition block truncate sm:whitespace-normal"
+                                    title={user.email}
+                                >
+                                    <span className="hidden sm:inline">{user.email}</span>
+                                    <span className="sm:hidden">{user.email.length > 20 ? user.email.slice(0, 20) + "..." : user.email}</span>
+                                </a>
+                            ) : (
+                                "No email provided"
+                            )
+                        }
+                    />
+                    <InfoRow 
+                        icon={<IoGlobe className="w-6 h-6 text-green-400" />} 
+                        text={
+                            <a 
+                                href={`/channel/${username}`} 
+                                className="text-green-400 hover:text-green-300 transition block truncate sm:w-auto sm:whitespace-normal"
+                                title={`https://viewcell.com/channel/${username}`}
+                            >
+                                <span className="hidden sm:inline">{`https://viewcell.com/channel/${username}`}</span>
+                                <span className="sm:hidden">viewcell.com/...</span>
+                            </a>
+                        } 
+                    />
+                </div>
+
+                {/* Stats Section */}
+                <div className="grid grid-cols-2 gap-4 mt-6">
+                    <StatCard icon={<BsPlayFill className="w-7 sm:w-8 h-7 sm:h-8 text-red-400" />} value={aboutChannel.totalVideos} label="Videos" />
+                    <StatCard icon={<IoEye className="w-7 sm:w-8 h-7 sm:h-8 text-yellow-400" />} value={aboutChannel.totalViews} label="Views" />
+                    <StatCard icon={<BiSolidLike className="w-7 sm:w-8 h-7 sm:h-8 text-pink-400" />} value={aboutChannel.totalLikes} label="Likes" />
+                    <StatCard icon={<AiFillMessage className="w-7 sm:w-8 h-7 sm:h-8 text-purple-400" />} value={aboutChannel.totalTweets} label="Tweets" />
+                </div>
+
+                <div className="mt-8 text-center">
+                    <InfoRow 
+                        icon={<GoInfo className="w-6 h-6 text-gray-400" />} 
+                        text={`Joined on ${formatDate(user.createdAt)}`} 
+                    />
+                </div>
             </div>
         </div>
     );
 }
+
+const InfoRow = ({ icon, text }) => (
+    <div className="flex items-center gap-3 bg-gray-700 bg-opacity-50 px-4 py-2 rounded-lg hover:bg-gray-600 transition">
+        {icon}
+        <p className="text-gray-200">{text}</p>
+    </div>
+);
+
+const StatCard = ({ icon, value, label }) => (
+    <div className="flex flex-col items-center bg-gray-800 bg-opacity-50 p-3 sm:p-4 rounded-lg shadow-md hover:bg-gray-700 transition">
+        {icon}
+        <h3 className="text-lg sm:text-xl font-bold text-white mt-1">{value}</h3>
+        <p className="text-gray-300 text-xs sm:text-sm">{label}</p>
+    </div>
+);
 
 export default AboutChannel;

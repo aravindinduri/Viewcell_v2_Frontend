@@ -41,27 +41,32 @@ function ChangePassword() {
     };
 
     return (
-        <div className="flex flex-wrap justify-center gap-y-4 py-4">
-            <div className="w-full sm:w-1/2 lg:w-1/3">
-                <h5 className="font-semibold">Password</h5>
-                <p className="text-gray-300">Update your password</p>
+        <div className="flex flex-wrap justify-center gap-y-6 py-6 bg-gray-900">
+            <div className="w-full sm:w-1/2 lg:w-1/3 text-center">
+                <h5 className="text-xl font-semibold text-white mb-2">
+                    Change Password
+                </h5>
+                <p className="text-gray-400">Update your account password.</p>
             </div>
-            <div className="w-full sm:w-1/2 lg:w-2/3">
+            <div className="w-full sm:w-1/2 lg:w-2/3 bg-gray-800 shadow-lg rounded-lg p-6 border border-gray-700">
                 <form
                     onSubmit={handleSubmit(handleSaveChange)}
-                    className="rounded-lg border"
+                    className="space-y-6"
                 >
-                    <div className="w-full px-4 py-2">
-                        <label htmlFor="old-pwd" className="mb-1 inline-block">
-                            Current password
+                    <div>
+                        <label
+                            htmlFor="old-pwd"
+                            className="block text-sm font-medium text-white"
+                        >
+                            Current Password
                         </label>
                         <input
                             type="password"
                             id="old-pwd"
-                            className="w-full px-2 py-1.5 border rounded-lg bg-transparent"
+                            className="w-full px-4 py-3 mt-2 bg-transparent text-white border border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                             placeholder="Enter your current password"
                             required
-                            {...register("oldPassword", { required: true })}
+                            {...register("oldPassword", { required: "This field is required" })}
                             onChange={(e) =>
                                 setData((prevData) => ({
                                     ...prevData,
@@ -71,17 +76,21 @@ function ChangePassword() {
                         />
                     </div>
 
-                    <div className="w-full px-4 py-2">
-                        <label htmlFor="new-pwd" className="mb-1 inline-block">
+                    <div>
+                        <label
+                            htmlFor="new-pwd"
+                            className="block text-sm font-medium text-white"
+                        >
                             New Password
                         </label>
                         <input
-                            placeholder="Enter your new password"
                             type="password"
-                            className="w-full px-2 py-1.5 border rounded-lg bg-transparent"
+                            id="new-pwd"
+                            className="w-full px-4 py-3 mt-2 bg-transparent text-white border border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                            placeholder="Enter your new password"
                             required
                             {...register("newPassword", {
-                                required: true,
+                                required: "New password is required",
                                 validate: {
                                     passLength: (value) =>
                                         value.length > 8 ||
@@ -96,19 +105,24 @@ function ChangePassword() {
                             }
                         />
                         {errors.newPassword && (
-                            <p className="text-red-600 px-2 mt-0.5 text-sm">
+                            <p className="text-red-600 text-sm mt-1">
                                 {errors.newPassword.message}
                             </p>
                         )}
                     </div>
-                    <div className="w-full px-4 py-2">
-                        <label htmlFor="cnf-pwd" className="mb-1 inline-block">
+
+                    <div>
+                        <label
+                            htmlFor="cnf-pwd"
+                            className="block text-sm font-medium text-white"
+                        >
                             Confirm Password
                         </label>
                         <input
-                            placeholder="Confirm password"
                             type="password"
-                            className="w-full px-2 py-1.5 border rounded-lg bg-transparent"
+                            id="cnf-pwd"
+                            className="w-full px-4 py-3 mt-2 bg-transparent text-white border border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                            placeholder="Confirm your new password"
                             required
                             onChange={(e) =>
                                 setData((prevData) => ({
@@ -118,8 +132,11 @@ function ChangePassword() {
                             }
                         />
                     </div>
-                    <hr className="border border-gray-300 mt-2" />
-                    <div className="flex items-center justify-end gap-4 p-4">
+
+                    <hr className="border-gray-600" />
+
+                    {/* Buttons */}
+                    <div className="flex items-center justify-end gap-4 mt-6">
                         <Button
                             onClick={() => {
                                 reset();
@@ -129,7 +146,7 @@ function ChangePassword() {
                                 JSON.stringify(data) ===
                                 JSON.stringify(defaultValues)
                             }
-                            className="inline-block rounded-lg border hover:bg-white/10 disabled:cursor-not-allowed"
+                            className="px-6 py-3 rounded-lg border border-gray-600 bg-gray-700 hover:bg-gray-600 text-gray-300 disabled:cursor-not-allowed"
                         >
                             Cancel
                         </Button>
@@ -139,9 +156,7 @@ function ChangePassword() {
                                 JSON.stringify(data) ===
                                 JSON.stringify(defaultValues)
                             }
-                            className="inline-block rounded-lg font-semibold hover:bg-pink-600 disabled:cursor-not-allowed"
-                            bgColor="bg-pink-700"
-                            textColor="text-black"
+                            className="px-6 py-3 rounded-lg font-semibold text-white bg-green-600 hover:bg-green-700 disabled:cursor-not-allowed"
                         >
                             Update Password
                         </Button>

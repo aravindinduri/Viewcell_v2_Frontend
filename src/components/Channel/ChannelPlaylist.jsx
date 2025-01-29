@@ -25,9 +25,7 @@ function ChannelPlaylist() {
 
     if (loading) {
         return (
-            <span className="flex justify-center mt-20">
-                {icons.bigLoading}
-            </span>
+            <span className="flex justify-center mt-20">{icons.bigLoading}</span>
         );
     }
 
@@ -46,14 +44,14 @@ function ChannelPlaylist() {
                         <div className="flex items-center justify-center">
                             <button
                                 onClick={popupPlaylistForm}
-                                className="mt-4 inline-flex items-center gap-x-2 bg-pink-500 hover:bg-pink-500/90 border border-transparent rounded-lg hover:border-white px-3 py-1.5 font-semibold text-black"
+                                className="mt-4 inline-flex items-center gap-x-2 bg-green-600 hover:bg-green-700 border border-transparent rounded-lg hover:border-white px-5 py-2 font-semibold text-white transition-all duration-150 ease-in-out"
                             >
                                 <IoAdd className="w-5 h-5" />
                                 New Playlist
                             </button>
                         </div>
                     )}
-                    <ul className="flex flex-wrap justify-start">
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
                         {playlists.map((playlist) => {
                             if (
                                 playlist.videosCount > 0 ||
@@ -63,7 +61,7 @@ function ChannelPlaylist() {
                                 return (
                                     <li
                                         key={playlist._id}
-                                        className="hover:bg-zinc-900 2xl:w-[18vw] md:w-[25vw] w-[90vw] rounded-md my-4 text-white mx-2 p-1"
+                                        className="group relative bg-zinc-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-200 ease-in-out"
                                     >
                                         <Link to={`/playlist/${playlist._id}`}>
                                             <div className="relative">
@@ -74,48 +72,25 @@ function ChannelPlaylist() {
                                                             : "https://res.cloudinary.com/dgfh6tf6j/image/upload/v1727779646/Screenshot_2024-10-01_161624_bwpw83.png"
                                                     }
                                                     alt="image"
-                                                    className="w-full md:h-[15vw] 2xl:h-[12vw] object-cover rounded-md"
+                                                    className="w-full h-[200px] object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
                                                 />
-                                                <div className="absolute inset-x-0 bottom-0">
-                                                    <div className="relative border-t bg-white/30 px-4 py-2 text-white backdrop-blur-sm before:absolute before:inset-0 before:bg-black/40">
-                                                        <div className="relative z-[1]">
-                                                            <p className="flex justify-between">
-                                                                <span className="inline-block">
-                                                                    {
-                                                                        playlist.name
-                                                                    }
-                                                                </span>
-                                                                <span className="inline-block text-center">
-                                                                    {
-                                                                        playlist.videosCount
-                                                                    }{" "}
-                                                                    video
-                                                                    {playlist.videosCount >
-                                                                    1
-                                                                        ? "s"
-                                                                        : ""}
-                                                                </span>
-                                                            </p>
-                                                            <p className="text-sm text-gray-200">
-                                                                {
-                                                                    playlist.totalViews
-                                                                }{" "}
-                                                                view
-                                                                {playlist.totalViews >
-                                                                1
-                                                                    ? "s"
-                                                                    : ""}{" "}
-                                                                ·{" "}
-                                                                {formatDate(
-                                                                    playlist.createdAt
-                                                                )}
-                                                            </p>
-                                                        </div>
-                                                    </div>
+                                                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/50 p-4 text-white">
+                                                    <p className="flex justify-between text-lg font-semibold">
+                                                        {playlist.name}
+                                                        <span className="text-sm text-gray-300">
+                                                            {playlist.videosCount}{" "}
+                                                            video{playlist.videosCount > 1 ? "s" : ""}
+                                                        </span>
+                                                    </p>
+                                                    <p className="text-sm text-gray-300">
+                                                        {playlist.totalViews}{" "}
+                                                        view{playlist.totalViews > 1 ? "s" : ""} ·{" "}
+                                                        {formatDate(playlist.createdAt)}
+                                                    </p>
                                                 </div>
                                             </div>
-                                            <div className="px-3 py-2 bg-zinc-800 rounded-b-md">
-                                                <p className="text-sm text-gray-200 overflow-hidden line-clamp-1">
+                                            <div className="px-4 py-3 bg-zinc-700 rounded-b-lg">
+                                                <p className="text-sm text-gray-200 overflow-hidden line-clamp-2">
                                                     {playlist.description}
                                                 </p>
                                             </div>

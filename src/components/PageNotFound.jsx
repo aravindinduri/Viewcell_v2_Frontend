@@ -14,7 +14,7 @@ function PageNotFound() {
                 />
             </span>
             <h1 className="text-xl mt-5 p-2">
-                <Button className="rounded-md hover:cursor-pointer hover:bg-pink-500" bgColor="bg-pink-600">
+                <Button className="rounded-md hover:cursor-pointer hover:bg-green-500" bgColor="bg-green-600">
                     <Link to={"/"}>Home</Link>
                 </Button>
             </h1>

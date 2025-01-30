@@ -8,48 +8,42 @@ function ChannelEmptyVideo() {
     const user = useSelector((state) => state.user.user);
     const navigate = useNavigate();
 
-    if (status && user.username === userData.username) {
-        return (
-            <div className="flex justify-center p-4">
-                <div className="w-full max-w-sm text-center mt-6">
-                    <p className="mb-3 w-full">
-                        <span className="inline-flex rounded-full bg-pink-500 p-2">
-                            <IoPlayOutline className="w-6 h-6"/>
-                        </span>
-                    </p>
-                    <h5 className="mb-2 font-semibold">No videos uploaded</h5>
-                    <p>
-                        You have yet to upload a video. Click to upload new
-                        video.
-                    </p>
+    return (
+        <div className="flex justify-center p-6 bg-gray-900">
+            <div className="w-full max-w-lg text-center mt-8 bg-gray-800 p-6 rounded-xl shadow-2xl">
+                <p className="mb-4">
+                    <span className="inline-flex rounded-full bg-green-600 p-4">
+                        <IoPlayOutline className="w-12 h-12 text-white" />
+                    </span>
+                </p>
+                <h5 className="text-2xl font-semibold mb-3 text-white">
+                    No videos uploaded
+                </h5>
+                <p className="text-sm text-gray-400 mb-6">
+                    {status && user.username === userData.username ? (
+                        <>
+                            You have yet to upload a video. Click the button to
+                            upload a new video.
+                        </>
+                    ) : (
+                        <>
+                            This page has yet to upload a video. You can search
+                            other pages to find more videos.
+                        </>
+                    )}
+                </p>
+                {status && user.username === userData.username ? (
                     <button
                         onClick={() => navigate("/admin/dashboard")}
-                        className="mt-4 inline-flex items-center gap-x-2 bg-pink-500 hover:bg-pink-500/90 border border-transparent rounded-lg hover:border-white px-3 py-1.5 font-semibold text-black"
+                        className="inline-flex items-center gap-x-3 bg-green-600 hover:bg-green-700 border border-transparent rounded-lg px-6 py-2 font-semibold text-white transition-all"
                     >
-                        <IoAdd className="w-5 h-5"/>
+                        <IoAdd className="w-5 h-5" />
                         New Video
                     </button>
-                </div>
+                ) : null}
             </div>
-        );
-    } else {
-        return (
-            <div className="flex justify-center p-4">
-                <div className="w-full max-w-sm text-center mt-6">
-                    <p className="mb-3 w-full">
-                        <span className="inline-flex rounded-full bg-pink-500 p-2">
-                            <IoPlayOutline className="w-6 h-6"/>
-                        </span>
-                    </p>
-                    <h5 className="mb-2 font-semibold">No videos uploaded</h5>
-                    <p>
-                        This page has yet to upload a video. Search another page
-                        in order to find more videos.
-                    </p>
-                </div>
-            </div>
-        );
-    }
+        </div>
+    );
 }
 
 export default ChannelEmptyVideo;

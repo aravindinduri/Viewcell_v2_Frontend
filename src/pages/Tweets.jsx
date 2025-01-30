@@ -9,6 +9,7 @@ import Tweet from "../components/Tweet/TweetCard.jsx";
 import { addTweets, removeTweets } from "../store/tweetsSlice.js";
 import GuestComponent from "../components/GuestPages/GuestComponent.jsx";
 import { TiMessages } from "react-icons/ti";
+import { AiOutlineClose, AiOutlinePlus } from "react-icons/ai"; // Added icons
 import { useLocation } from "react-router-dom";
 import LoginPopup from "../components/Auth/LoginPopup.jsx";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -77,9 +78,9 @@ function Tweets() {
 
     if (loading) {
         return (
-            <span className="flex justify-center mt-20">
+            <div className="flex justify-center mt-20">
                 {icons.bigLoading}
-            </span>
+            </div>
         );
     }
 
@@ -87,10 +88,10 @@ function Tweets() {
         <>
             <form
                 onSubmit={handleSubmit(addTweet)}
-                className="mt-4 border pb-2 rounded-lg mx-4"
+                className="mt-4 border pb-4 rounded-xl mx-4 bg-gradient-to-r from-gray-800 to-gray-900 p-4"
             >
                 <textarea
-                    className="mb-2 w-full resize-none border-none bg-transparent px-3 pt-2 outline-none"
+                    className="mb-4 w-full resize-none border-none bg-transparent px-4 pt-3 rounded-xl shadow-md text-lg font-semibold text-white outline-none transition-all duration-200 focus:ring-2 focus:ring-blue-500"
                     placeholder="Write a tweet"
                     rows={"2"}
                     required
@@ -110,26 +111,28 @@ function Tweets() {
                 <div className="flex items-center justify-between gap-x-3 px-3">
                     <div className="flex-grow">
                         {errors.content && (
-                            <p className="text-red-600 mt-0.5 text-sm">
+                            <p className="text-red-600 mt-1 text-sm">
                                 {errors.content.message}
                             </p>
                         )}
                     </div>
                     <div className="flex items-center gap-x-3">
                         <Button
-                            className="rounded-lg hover:bg-slate-800"
+                            className="rounded-lg hover:bg-gray-600 transition-all duration-200"
                             bgColor=""
                             onClick={() => reset()}
                         >
-                            Cancel
+                            <AiOutlineClose className="text-xl text-gray-300" />
                         </Button>
+
                         <Button
                             type="submit"
-                            className="font-semibold hover:bg-pink-700 rounded-lg"
-                            bgColor="bg-pink-600"
+                            className="font-semibold hover:bg-green-700 rounded-lg transition-all duration-200"
+                            bgColor="bg-green-600"
                         >
-                            Add
+                            <AiOutlinePlus className="text-xl text-white" />
                         </Button>
+
                         <LoginPopup
                             ref={LoginPopupDialog}
                             message="Login to Tweet..."
@@ -138,7 +141,7 @@ function Tweets() {
                     </div>
                 </div>
             </form>
-            <div className="mt-6 border-b border-gray-400"></div>
+            <div className="mt-6 border-b border-gray-600"></div>
             {tweets?.length > 0 ? (
                 <InfiniteScroll
                     dataLength={tweets.length}
@@ -151,9 +154,13 @@ function Tweets() {
                     }
                     scrollableTarget="scrollableDiv"
                 >
-                    <ul className="py-4 px-4">
+                    <ul className="py-4 px-4 space-y-4">
                         {tweets.map((tweet) => (
-                            <Tweet key={tweet._id} tweet={tweet} page={true} />
+                            <Tweet
+                                key={tweet._id}
+                                tweet={tweet}
+                                page={true}
+                            />
                         ))}
                     </ul>
                 </InfiniteScroll>
@@ -161,7 +168,7 @@ function Tweets() {
                 <GuestComponent
                     icon={
                         <span className="w-full h-full flex items-center p-4 pb-5">
-                            <TiMessages className="w-32 h-32" />
+                            <TiMessages className="w-32 h-32 text-gray-400" />
                         </span>
                     }
                     title="Empty Tweets"

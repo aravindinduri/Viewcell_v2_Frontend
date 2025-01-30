@@ -6,39 +6,31 @@ function ChannelEmptyTweet() {
     const { status, userData } = useSelector((state) => state.auth);
     const user = useSelector((state) => state.user.user);
 
-    if (status && user.username === userData.username) {
-        return (
-            <div className="flex justify-center p-4">
-                <div className="w-full max-w-sm text-center mt-6">
-                    <p className="mb-3 w-full">
-                        <span className="inline-flex rounded-full bg-pink-500 p-2">
-                            <TiMessages className="w-6 h-6" />
-                        </span>
-                    </p>
-                    <h5 className="mb-2 font-semibold">No Tweets</h5>
-                    <p>
-                        You have yet to make an <strong>Announcement.</strong>
-                    </p>
-                </div>
+    return (
+        <div className="flex justify-center p-6 bg-gray-900">
+            <div className="w-full max-w-lg text-center mt-8 bg-gray-800 p-6 rounded-xl shadow-2xl">
+                <p className="mb-4">
+                    <span className="inline-flex rounded-full bg-green-600 p-3 text-white">
+                        <TiMessages className="w-10 h-10" />
+                    </span>
+                </p>
+                <h5 className="text-2xl font-semibold mb-3 text-white">
+                    No Tweets
+                </h5>
+                <p className="text-sm text-gray-400 mb-4">
+                    {status && user.username === userData.username ? (
+                        <>
+                            You have yet to make an <strong>Announcement</strong>.
+                        </>
+                    ) : (
+                        <>
+                            This channel has yet to make an <strong>Announcement</strong>.
+                        </>
+                    )}
+                </p>
             </div>
-        );
-    } else {
-        return (
-            <div className="flex justify-center p-4">
-                <div className="w-full max-w-sm text-center mt-6">
-                    <p className="mb-3 w-full">
-                        <span className="inline-flex rounded-full bg-pink-500 p-2">
-                            <TiMessages className="w-6 h-6" />
-                        </span>
-                    </p>
-                    <h5 className="mb-2 font-semibold">No Tweets</h5>
-                    <p>
-                        This channel has yet to make an{" "}
-                        <strong>Announcement.</strong>
-                    </p>
-                </div>
-            </div>
-        );
-    }
+        </div>
+    );
 }
+
 export default ChannelEmptyTweet;

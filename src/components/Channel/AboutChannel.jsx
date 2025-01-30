@@ -95,7 +95,6 @@ function AboutChannel() {
                     />
                 </div>
 
-                {/* Stats Section */}
                 <div className="grid grid-cols-2 gap-4 mt-6">
                     <StatCard icon={<BsPlayFill className="w-7 sm:w-8 h-7 sm:h-8 text-red-400" />} value={aboutChannel.totalVideos} label="Videos" />
                     <StatCard icon={<IoEye className="w-7 sm:w-8 h-7 sm:h-8 text-yellow-400" />} value={aboutChannel.totalViews} label="Views" />

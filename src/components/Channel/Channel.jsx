@@ -149,7 +149,7 @@ function Channel() {
                             end
                             className={({ isActive }) =>
                                 isActive
-                                    ? "w-full border-b-2 border-green-600 text-green-600 bg-white px-4 py-2 rounded-lg transition-all"
+                                    ? "w-full border-b-2 border-black-600 text-black bg-white px-4 py-2 rounded-lg transition-all"
                                     : "w-full border-b-2 border-transparent text-gray-400 px-4 py-2 rounded-lg transition-all hover:bg-gray-200"
                             }
                         >
@@ -161,7 +161,7 @@ function Channel() {
                             to={"playlist"}
                             className={({ isActive }) =>
                                 isActive
-                                    ? "w-full border-b-2 border-green-600 text-green-600 bg-white px-4 py-2 rounded-lg transition-all"
+                                    ? "w-full border-b-2 border-black-600 text-black bg-white px-4 py-2 rounded-lg transition-all"
                                     : "w-full border-b-2 border-transparent text-gray-400 px-4 py-2 rounded-lg transition-all hover:bg-gray-200"
                             }
                         >
@@ -173,7 +173,7 @@ function Channel() {
                             to={"tweets"}
                             className={({ isActive }) =>
                                 isActive
-                                    ? "w-full border-b-2 border-green-600 text-green-600 bg-white px-4 py-2 rounded-lg transition-all"
+                                    ? "w-full border-b-2 border-black-600 text-black bg-white px-4 py-2 rounded-lg transition-all"
                                     : "w-full border-b-2 border-transparent text-gray-400 px-4 py-2 rounded-lg transition-all hover:bg-gray-200"
                             }
                         >
@@ -185,7 +185,7 @@ function Channel() {
                             to={"subscribed"}
                             className={({ isActive }) =>
                                 isActive
-                                    ? "w-full border-b-2 border-green-600 text-green-600 bg-white px-4 py-2 rounded-lg transition-all"
+                                    ? "w-full border-b-2 border-black-600 text-black bg-white px-4 py-2 rounded-lg transition-all"
                                     : "w-full border-b-2 border-transparent text-gray-400 px-4 py-2 rounded-lg transition-all hover:bg-gray-200"
                             }
                         >
@@ -197,7 +197,7 @@ function Channel() {
                             to={"about"}
                             className={({ isActive }) =>
                                 isActive
-                                    ? "w-full border-b-2 border-green-600 text-green-600 bg-white px-4 py-2 rounded-lg transition-all"
+                                    ? "w-full border-b-2 border-black-600 text-black bg-white px-4 py-2 rounded-lg transition-all"
                                     : "w-full border-b-2 border-transparent text-gray-400 px-4 py-2 rounded-lg transition-all hover:bg-gray-200"
                             }
                         >

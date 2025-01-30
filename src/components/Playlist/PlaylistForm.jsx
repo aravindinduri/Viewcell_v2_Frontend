@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { updatePlaylist } from "../../store/playlistSlice.js";
 import { getUserPlaylist } from "../../hooks/getUserPlaylist.js";
 
-function PlaylistForm({ playlist, route }, ref) {
+const PlaylistForm = ({ playlist, route }, ref) => {
     const dialog = useRef();
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -21,7 +21,7 @@ function PlaylistForm({ playlist, route }, ref) {
     const [showPopup, setShowPopup] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const { register, handleSubmit, reset } = useForm({
+    const { register, handleSubmit, reset, formState: { errors } } = useForm({
         defaultValues: {
             name: playlist?.name || "",
             description: playlist?.description || "",
@@ -30,16 +30,14 @@ function PlaylistForm({ playlist, route }, ref) {
 
     useImperativeHandle(
         ref,
-        () => {
-            return {
-                open() {
-                    setShowPopup(true);
-                },
-                close() {
-                    handleClose();
-                },
-            };
-        },
+        () => ({
+            open() {
+                setShowPopup(true);
+            },
+            close() {
+                handleClose();
+            },
+        }),
         []
     );
 
@@ -59,38 +57,28 @@ function PlaylistForm({ playlist, route }, ref) {
     const handleUpdatePlaylist = async (data) => {
         setLoading(true);
         try {
+            let response;
             if (playlist) {
-                const response = await axiosInstance.patch(
-                    `/playlist/${playlist._id}`,
-                    data
-                );
-                if (response?.data?.success) {
-                    dispatch(
-                        updatePlaylist({
-                            name: response.data.data.name,
-                            description: response.data.data.description,
-                        })
-                    );
-                    toast.success(response.data.message + "🤩");
-                    if (route) {
-                        navigate(route);
-                    }
-                    dialog.current.close();
-                }
+                response = await axiosInstance.patch(`/playlist/${playlist._id}`, data);
             } else {
-                const response = await axiosInstance.post(`playlist/`, data);
-                if (response?.data?.success) {
-                    getUserPlaylist(dispatch, userId);
-                }
+                response = await axiosInstance.post(`playlist/`, data);
+            }
+
+            if (response?.data?.success) {
+                dispatch(updatePlaylist({
+                    name: response.data.data.name,
+                    description: response.data.data.description,
+                }));
                 toast.success(response.data.message + "🤩");
-                if (route) {
-                    navigate(route);
-                }
+
+                if (route) navigate(route);
                 dialog.current.close();
+            } else {
+                toast.error(response?.data?.message || "Something went wrong");
             }
         } catch (error) {
             toast.error("Something went wrong");
-            console.log(error);
+            console.error(error);
         } finally {
             setLoading(false);
         }
@@ -113,8 +101,7 @@ function PlaylistForm({ playlist, route }, ref) {
                                 >
                                     <div className="mb-4 flex items-start justify-between">
                                         <h2 className="text-xl font-semibold">
-                                            {playlist ? "Edit" : "Create"}{" "}
-                                            Playlist
+                                            {playlist ? "Edit" : "Create"} Playlist
                                         </h2>
                                         <button
                                             autoFocus
@@ -125,6 +112,7 @@ function PlaylistForm({ playlist, route }, ref) {
                                             <IoClose className="w-7 h-7" />
                                         </button>
                                     </div>
+
                                     <div className="mb-4 flex flex-col gap-y-4">
                                         <Input
                                             label="Title"
@@ -132,10 +120,12 @@ function PlaylistForm({ playlist, route }, ref) {
                                             className2="pt-5"
                                             placeholder="Enter name of the Playlist"
                                             required
-                                            {...register("name", {
-                                                required: true,
-                                            })}
+                                            {...register("name", { required: "Title is required" })}
                                         />
+                                        {errors.name && (
+                                            <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
+                                        )}
+
                                         <div className="w-full">
                                             <label
                                                 htmlFor="desc"
@@ -148,12 +138,11 @@ function PlaylistForm({ playlist, route }, ref) {
                                                 id="desc"
                                                 className="px-2 rounded-lg w-full py-1 bg-zinc-800 text-white outline-none duration-200 border focus:border-blue-800 border-gray-200"
                                                 placeholder="Enter some description of the Playlist"
-                                                {...register("description", {
-                                                    required: false,
-                                                })}
+                                                {...register("description")}
                                             />
                                         </div>
                                     </div>
+
                                     <div className="grid grid-cols-2 gap-4">
                                         <Button
                                             onClick={handleClose}
@@ -167,18 +156,9 @@ function PlaylistForm({ playlist, route }, ref) {
                                             type="submit"
                                             disabled={loading}
                                             className="mt-6 disabled:cursor-not-allowed py-2 rounded-lg"
-                                            bgColor={
-                                                loading
-                                                    ? "bg-pink-800"
-                                                    : "bg-pink-600"
-                                            }
+                                            bgColor={loading ? "bg-green-800" : "bg-green-600"}
                                         >
-                                            {loading && (
-                                                <span>{icons.loading}</span>
-                                            )}
-                                            {!loading && playlist
-                                                ? "Update"
-                                                : "Create"}
+                                            {loading ? icons.loading : playlist ? "Update" : "Create"}
                                         </Button>
                                     </div>
                                 </form>
@@ -189,6 +169,6 @@ function PlaylistForm({ playlist, route }, ref) {
                 )}
         </div>
     );
-}
+};
 
 export default React.forwardRef(PlaylistForm);

@@ -107,14 +107,14 @@ function ChannelTweets() {
                                 bgColor=""
                                 onClick={() => reset()}
                             >
-                                Cancel
+                                X
                             </Button>
                             <Button
                                 type="submit"
-                                className="font-semibold hover:bg-pink-700 rounded-lg"
-                                bgColor="bg-pink-600"
+                                className="font-semibold hover:bg-green-700 rounded-lg"
+                                bgColor="bg-green-600"
                             >
-                                Add
+                                +
                             </Button>
                         </div>
                     </div>

@@ -114,7 +114,7 @@ function Settings() {
                         htmlFor="cover-image"
                         className="inline-block h-10 w-10 cursor-pointer rounded-lg bg-white/50 p-1 text-gray-500 hover:bg-white"
                     >
-                        <IoCloudUploadOutline className="text-pink-500 w-8 h-8" />
+                        <IoCloudUploadOutline className="text-green-500 w-8 h-8" />
                     </label>
                 </form>
             </div>
@@ -159,7 +159,7 @@ function Settings() {
                                 htmlFor="profile-image"
                                 className="inline-block h-8 w-8 cursor-pointer rounded-lg bg-white/50 p-1 text-gray-500 hover:bg-white"
                             >
-                                <IoCloudUploadOutline className="text-pink-500 w-6 h-6" />
+                                <IoCloudUploadOutline className="text-green-500 w-6 h-6" />
                             </label>
                         </form>
                     </div>
@@ -176,8 +176,8 @@ function Settings() {
                             onClick={() =>
                                 navigate(`/channel/${userData.username}`)
                             }
-                            className="mr-1 font-semibold transition-all duration-150 ease-in-out active:translate-x-[5px] active:translate-y-[5px] rounded-md hover:bg-pink-600"
-                            bgColor="bg-pink-700"
+                            className="mr-1 font-semibold transition-all duration-150 ease-in-out active:translate-x-[5px] active:translate-y-[5px] rounded-md hover:bg-green-600"
+                            bgColor="bg-green-700"
                         >
                             View Channel
                         </Button>
@@ -189,7 +189,7 @@ function Settings() {
                             onClick={() => setCurrentTab(0)}
                             className={`w-full border-b-2 transition-all duration-100 ${
                                 currentTab === 0
-                                    ? "border-[#e14bc8] text-[#e14bc8] bg-white"
+                                    ? "border-[#131413] text-[#262826] bg-white"
                                     : "border-transparent text-gray-400"
                             }`}
                             bgColor=""
@@ -203,7 +203,7 @@ function Settings() {
                             onClick={() => setCurrentTab(1)}
                             className={`w-full border-b-2 transition-all duration-100 ${
                                 currentTab === 1
-                                    ? "border-[#e14bc8] text-[#e14bc8] bg-white"
+                                    ? "border-[#131413] text-[#262826] bg-white"
                                     : "border-transparent text-gray-400"
                             }`}
                             bgColor=""
@@ -217,7 +217,7 @@ function Settings() {
                             onClick={() => setCurrentTab(2)}
                             className={`w-full border-b-2 transition-all duration-100 ${
                                 currentTab === 2
-                                    ? "border-[#e14bc8] text-[#e14bc8] bg-white"
+                                    ? "border-[#131413] text-[#262826] bg-white"
                                     : "border-transparent text-gray-400"
                             }`}
                             bgColor=""

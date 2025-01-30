@@ -59,7 +59,6 @@ function EditChannelInfo() {
                     onSubmit={handleSubmit(handleSaveChange)}
                     className="space-y-6"
                 >
-                    {/* Username Input */}
                     <div>
                         <label
                             htmlFor="username"
@@ -100,7 +99,6 @@ function EditChannelInfo() {
                         )}
                     </div>
 
-                    {/* Description Input */}
                     <div>
                         <label
                             htmlFor="desc"
@@ -139,7 +137,6 @@ function EditChannelInfo() {
 
                     <hr className="border-gray-600" />
 
-                    {/* Buttons */}
                     <div className="flex items-center justify-end gap-4 mt-6">
                         <Button
                             onClick={() => {

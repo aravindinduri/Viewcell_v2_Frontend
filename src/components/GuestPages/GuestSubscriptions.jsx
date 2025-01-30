@@ -1,15 +1,15 @@
-import React from 'react'
+import React from 'react';
 import GuestComponent from "./GuestComponent";
-import { FaRegPlayCircle } from "react-icons/fa";
+import { MdPlayCircleOutline } from "react-icons/md";
 
 function GuestSubscriptions() {
     return (
         <GuestComponent
-            title="Watch videos you like"
-            subtitle="Login and get the videos of channel you subscribe at one place."
+            title="Discover Your Favorite Videos"
+            subtitle="Sign in to explore, save, and enjoy content from your favorite creators—all in one place."
             icon={
                 <span className="w-full h-full flex items-center p-4 pb-5">
-                    <FaRegPlayCircle className="w-32 h-32"/>
+                    <MdPlayCircleOutline className="w-28 h-28 text-green-400" />
                 </span>
             }
             route="/subscriptions"
@@ -17,4 +17,4 @@ function GuestSubscriptions() {
     );
 }
 
-export default GuestSubscriptions
+export default GuestSubscriptions;

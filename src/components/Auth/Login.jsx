@@ -43,9 +43,7 @@ function Login() {
                 </svg>
             </div>
 
-            {/* Login Card */}
             <div className="w-full max-w-md bg-[#161B22] rounded-lg shadow-lg p-8 relative z-10 border border-green-600">
-                {/* Title */}
                 <div className="text-center">
                     <h2 className="text-2xl font-semibold text-green-500">Welcome Back</h2>
                     <p className="text-gray-400 text-sm mt-1">
@@ -58,9 +56,7 @@ function Login() {
 
                 {error && <p className="text-red-500 text-center mt-4">{error}</p>}
 
-                {/* Form */}
                 <form onSubmit={handleSubmit(login)} className="mt-6 space-y-4">
-                    {/* Email Input */}
                     <div>
                         <label className="block text-sm text-gray-300">Email</label>
                         <input
@@ -72,7 +68,6 @@ function Login() {
                         {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email?.message}</p>}
                     </div>
 
-                    {/* Password Input */}
                     <div>
                         <label className="block text-sm text-gray-300">Password</label>
                         <input
@@ -84,7 +79,6 @@ function Login() {
                         {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password?.message}</p>}
                     </div>
 
-                    {/* Submit Button */}
                     <button
                         type="submit"
                         disabled={loading}

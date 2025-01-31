@@ -9,7 +9,8 @@ function SignUp() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const password = watch("password");
 
     const signup = async (data) => {
         const formData = new FormData();
@@ -35,7 +36,6 @@ function SignUp() {
 
     return (
         <div className="h-screen w-full flex items-center justify-center bg-[#0D1117] relative overflow-hidden">
-            {/* Background SVG */}
             <div className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none">
                 <svg viewBox="0 0 1440 320" className="w-full h-full">
                     <path fill="#1DB954" fillOpacity="0.5"
@@ -44,9 +44,7 @@ function SignUp() {
                 </svg>
             </div>
 
-            {/* SignUp Card */}
             <div className="w-full max-w-md bg-[#161B22] rounded-lg shadow-lg p-8 relative z-10 border border-green-600">
-                {/* Title */}
                 <div className="text-center">
                     <h2 className="text-2xl font-semibold text-green-500">Create an Account</h2>
                     <p className="text-gray-400 text-sm mt-1">
@@ -59,9 +57,7 @@ function SignUp() {
 
                 {error && <p className="text-red-500 text-center mt-4">{error}</p>}
 
-                {/* Form */}
                 <form onSubmit={handleSubmit(signup)} className="mt-6 space-y-4">
-                    {/* Input Fields */}
                     {[
                         { name: "fullName", type: "text", label: "Full Name", placeholder: "John Doe" },
                         { name: "username", type: "text", label: "Username", placeholder: "your_username" },
@@ -80,7 +76,22 @@ function SignUp() {
                         </div>
                     ))}
 
-                    {/* Avatar Upload */}
+                    <div>
+                        <label className="block text-sm text-gray-300">Confirm Password</label>
+                        <input
+                            {...register("confirmPassword", {
+                                required: "Confirm Password is required",
+                                validate: (value) => value === password || "Passwords do not match",
+                            })}
+                            type="password"
+                            placeholder="********"
+                            className="w-full p-2 mt-1 bg-[#0D1117] border border-green-600 rounded-md focus:ring-2 focus:ring-green-400 focus:outline-none text-white"
+                        />
+                        {errors.confirmPassword && (
+                            <p className="text-red-500 text-xs mt-1">{errors.confirmPassword.message}</p>
+                        )}
+                    </div>
+
                     <div>
                         <label className="block text-sm text-gray-300">Avatar</label>
                         <input
@@ -96,13 +107,36 @@ function SignUp() {
                         {errors.avatar && <p className="text-red-500 text-xs mt-1">{errors.avatar.message}</p>}
                     </div>
 
-                    {/* Submit Button */}
+                    <div>
+                        <label className="block text-sm text-gray-300">Cover Image (Optional)</label>
+                        <input
+                            type="file"
+                            {...register("coverImage", {
+                                validate: (file) =>
+                                    !file[0] || ["image/jpeg", "image/png", "image/jpg"].includes(file[0]?.type) ||
+                                    "Only .png, .jpg, .jpeg files are allowed",
+                            })}
+                            className="w-full p-2 mt-1 bg-[#0D1117] border border-green-600 rounded-md text-white"
+                        />
+                        {errors.coverImage && <p className="text-red-500 text-xs mt-1">{errors.coverImage.message}</p>}
+                    </div>
+
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-2 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-500 transition-all"
+                        className="w-full py-2 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-500 transition-all flex items-center justify-center"
                     >
-                        {loading ? "Creating..." : "Sign Up"}
+                        {loading ? (
+                            <>
+                                <svg className="animate-spin h-5 w-5 mr-3 text-white" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 0116 0H4z"></path>
+                                </svg>
+                                Creating...
+                            </>
+                        ) : (
+                            "Sign Up"
+                        )}
                     </button>
                 </form>
             </div>

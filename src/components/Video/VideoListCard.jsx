@@ -21,7 +21,6 @@ const VideoCard = React.memo(({ video }) => {
                     </p>
                 </div>
 
-                {/* Video Details */}
                 <div className="p-3">
                     <h1 className="font-semibold text-lg line-clamp-2">
                         {video?.title}

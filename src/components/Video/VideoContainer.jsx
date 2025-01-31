@@ -4,6 +4,7 @@ import { FaVideo } from "react-icons/fa";
 import axiosInstance from "../../utils/axios.helper.js";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { icons } from "../../assets/Icons.jsx";
+import SkeletonVideoCard from "./SkeletonVideoCard";
 
 function VideoContainer() {
     const [videos, setVideos] = useState([]);
@@ -43,8 +44,10 @@ function VideoContainer() {
 
     if (loading) {
         return (
-            <div className="flex justify-center items-center h-[50vh]">
-                {icons.bigLoading}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
+                {Array.from({ length: 16 }).map((_, index) => (
+                    <SkeletonVideoCard key={index} />
+                ))}
             </div>
         );
     }
@@ -66,8 +69,10 @@ function VideoContainer() {
             next={fetchMoreData}
             hasMore={hasMore}
             loader={
-                <div className="flex justify-center py-4">
-                    {icons.loading}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
+                    {Array.from({ length: 4 }).map((_, index) => (
+                        <SkeletonVideoCard key={index} />
+                    ))}
                 </div>
             }
         >

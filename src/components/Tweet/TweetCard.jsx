@@ -1,16 +1,16 @@
 import React, { useRef, useState, useEffect } from "react";
-import getTimeDistanceToNow from "../../utils/getTimeDistance";
-import { toast } from "react-toastify";
-import axiosInstance from "../../utils/axios.helper";
+import { BiLike, BiSolidLike } from "react-icons/bi";
+import { BsThreeDotsVertical } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useForm } from "react-hook-form";
+import getTimeDistanceToNow from "../../utils/getTimeDistance";
+import axiosInstance from "../../utils/axios.helper";
 import Button from "../Button";
 import LoginPopup from "../Auth/LoginPopup";
 import { getUserTweets } from "../../hooks/getUserTweets";
 import { removeUserTweets } from "../../store/userSlice";
-import { useForm } from "react-hook-form";
-import { BiLike, BiSolidLike } from "react-icons/bi";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import { deleteTweet, updateTweet, toggleLike } from "../../store/tweetsSlice";
 
 function Tweet({ tweet, page = false }) {
@@ -105,66 +105,60 @@ function Tweet({ tweet, page = false }) {
     }, []);
 
     return (
-        <li className="flex relative p-4 mb-4 bg-gray-900/50 backdrop-blur-md rounded-lg border border-gray-700/50 hover:border-green-500/50 transition-all duration-300 group">
-            <div className="h-12 w-12 shrink-0">
-                <Link to={`${userData?._id === tweet?.owner?._id ? "" : "/channel/" + tweet.owner.username}`}>
-                    <img src={tweet.owner.avatar} alt="user" className="h-full w-full rounded-full object-cover border-2 border-green-500/50 hover:border-green-500 transition-all duration-300" />
+        <li className="relative p-5 mb-5 bg-white/10 backdrop-blur-md rounded-xl border border-gray-600/50 shadow-lg hover:shadow-xl transition-all duration-300">
+            {/* Profile & Header */}
+            <div className="flex items-start">
+                {/* Profile Image */}
+                <Link to={userData?._id === tweet?.owner?._id ? "" : "/channel/" + tweet.owner.username} className="relative w-12 h-12">
+                    <img src={tweet.owner.avatar} alt="user" className="w-full h-full rounded-full object-cover border-2 border-gray-500 hover:border-green-400 transition-all duration-300" />
                 </Link>
-            </div>
 
-            <div className="px-3 justify-start flex-grow">
-                <div className="flex items-center">
-                    <p className="font-semibold text-white">{tweet?.owner?.fullName}</p>
-                    <p className="ml-2 text-gray-400 text-sm">· {getTimeDistanceToNow(tweet?.createdAt)}</p>
-                </div>
-                {update ? (
-                    <form className="mt-2 flex flex-col space-y-3" onSubmit={handleSubmit(handleTweetUpdate)}>
-                        <textarea
-                            {...register("newContent", { required: true })}
-                            placeholder="Edit your tweet..."
-                            className="w-full p-2 bg-transparent text-white border border-gray-700/50 rounded-lg focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500/50 transition-all duration-300"
-                            rows="3"
-                        />
-                        <div className="flex space-x-3">
-                            <Button type="submit" className="flex-1 bg-gradient-to-r from-green-500 to-teal-500 text-white font-semibold py-2 px-4 rounded-lg hover:from-green-600 hover:to-teal-600 transition-all duration-300 shadow-lg hover:shadow-green-500/20">
-                                Update
-                            </Button>
-                            <Button onClick={cancelEditing} className="flex-1 bg-gradient-to-r from-gray-700 to-gray-800 text-white font-semibold py-2 px-4 rounded-lg hover:from-gray-800 hover:to-gray-900 transition-all duration-300 shadow-lg hover:shadow-gray-500/20">
-                                Cancel
-                            </Button>
+                {/* Tweet Content */}
+                <div className="ml-4 flex-grow">
+                    <div className="flex justify-between items-center">
+                        <div>
+                            <p className="text-white font-bold">{tweet?.owner?.fullName}</p>
+                            <p className="text-gray-400 text-xs">{getTimeDistanceToNow(tweet?.createdAt)}</p>
                         </div>
-                    </form>
-                ) : (
-                    <div className="mt-1 text-gray-300 break-words">{tweet?.content}</div>
-                )}
 
-                <button onClick={() => toggleTweetLike()} className="mt-2 flex items-center text-sm text-gray-400 hover:text-green-500 transition-all duration-300">
-                    {tweet?.isLiked ? (
-                        <BiSolidLike className="w-5 h-5 text-green-500" />
+                        {/* Menu */}
+                        {tweet?.owner?._id === userData?._id && (
+                            <div ref={ref} className="relative">
+                                <button onClick={() => setMenu(!menu)} className="p-2 hover:bg-gray-800/50 rounded-full transition-all duration-300">
+                                    <BsThreeDotsVertical className="text-gray-400 hover:text-green-500" />
+                                </button>
+                                {menu && (
+                                    <div className="absolute right-0 w-32 bg-gray-900 rounded-lg shadow-md border border-gray-700">
+                                        <button onClick={handleUpdate} className="block w-full px-4 py-2 text-left text-white hover:bg-gray-800">Edit</button>
+                                        <button onClick={handleDelete} className="block w-full px-4 py-2 text-left text-red-500 hover:bg-gray-800">Delete</button>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Tweet Content */}
+                    {update ? (
+                        <form onSubmit={handleSubmit(handleTweetUpdate)} className="mt-3">
+                            <textarea {...register("newContent", { required: true })} className="w-full bg-gray-800 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300" rows="3" />
+                            <div className="flex space-x-3 mt-2">
+                                <Button type="submit" className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Update</Button>
+                                <Button onClick={cancelEditing} className="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-800">Cancel</Button>
+                            </div>
+                        </form>
                     ) : (
-                        <BiLike className="w-5 h-5" />
+                        <p className="mt-2 text-gray-300 text-lg">{tweet?.content}</p>
                     )}
-                    <p className="ml-1">{tweet?.likesCount}</p>
-                </button>
-            </div>
 
-            {tweet?.owner?._id === userData?._id && (
-                <div ref={ref} className="relative">
-                    <button onClick={() => setMenu((prev) => !prev)} className="p-2 hover:bg-gray-800/50 rounded-full transition-all duration-300">
-                        <BsThreeDotsVertical className="text-gray-400 hover:text-green-500" />
+                    {/* Like Button */}
+                    <button onClick={toggleTweetLike} className="mt-3 flex items-center text-sm text-gray-400 hover:text-green-500 transition-all duration-300">
+                        <span className={`w-5 h-5 transition-all ${tweet?.isLiked ? "animate-pulse text-green-500" : ""}`}>
+                            {tweet?.isLiked ? <BiSolidLike /> : <BiLike />}
+                        </span>
+                        <span className="ml-2">{tweet?.likesCount}</span>
                     </button>
-                    {menu && (
-                        <div className="absolute right-0 w-32 bg-gray-900/90 backdrop-blur-md rounded-lg shadow-lg text-sm border border-gray-700/50">
-                            <button onClick={() => handleUpdate()} className="block w-full text-left px-4 py-2 hover:bg-gray-800/50 hover:text-green-500 transition-all duration-300">
-                                Update
-                            </button>
-                            <button onClick={() => handleDelete()} className="block w-full text-left px-4 py-2 hover:bg-gray-800/50 hover:text-red-500 transition-all duration-300">
-                                Delete
-                            </button>
-                        </div>
-                    )}
                 </div>
-            )}
+            </div>
 
             <LoginPopup ref={LoginLikePopupDialog} message="Login to like this Tweet..." route={location.pathname} />
         </li>

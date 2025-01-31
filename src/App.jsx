@@ -26,17 +26,10 @@ function App() {
 
     if (loading) {
         return (
-            <div className="h-screen w-full  overflow-y-auto bg-[#121212] text-white">
-                <div className="flex flex-col items-center justify-center mt-64">
-                    <span>{icons.loading}</span>
-                    <h1 className="text-3xl text-center mt-8 font-semibold">
-                        View cell is Loading
-                    </h1>
-                    <h1 className="text-xl text-center mt-4">
-                        Refresh the page if it takes too long
-                    </h1>
-                </div>
-            </div>
+<div className="h-screen w-full flex flex-col items-center justify-center bg-[#121212] text-white">
+    <div className="loader">Loading</div>
+</div>
+
         );
     }
     return (

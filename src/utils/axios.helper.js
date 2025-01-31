@@ -3,11 +3,10 @@ import { toast } from "react-toastify";
 import { parseErrorMessage } from "./parseErrorMsg";
 
 const axiosInstance = axios.create({
-    baseURL: "https://video-streaming-app-wme1.onrender.com/api/v1",
+    baseURL: "https://viewcell-v2-backend.onrender.com/api/v1/",
     withCredentials: true,
 });
 
-// Request interceptor to add the access token to headers
 axiosInstance.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem("accessToken");
@@ -21,7 +20,6 @@ axiosInstance.interceptors.request.use(
     }
 );
 
-// Response interceptor to handle token expiration
 axiosInstance.interceptors.response.use(
     (response) => {
         return response;

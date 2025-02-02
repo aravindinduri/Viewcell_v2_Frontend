@@ -34,7 +34,6 @@ function Login() {
 
     return (
         <div className="h-screen w-full flex items-center justify-center bg-[#0D1117] relative overflow-hidden">
-            {/* Background SVG */}
             <div className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none">
                 <svg viewBox="0 0 1440 320" className="w-full h-full">
                     <path fill="#1DB954" fillOpacity="0.5"

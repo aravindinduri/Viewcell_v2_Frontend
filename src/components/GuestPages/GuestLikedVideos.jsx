@@ -12,7 +12,7 @@ function GuestLikedVideos() {
                     <BiLike className="w-32 h-32"/>
                 </span>
             }
-            route="/liked-videos"
+            route="/login?redirect=/liked-videos"
         />
     );
 }

@@ -61,7 +61,7 @@ function ChannelVideos() {
                         type="button"
                         className={`px-3 py-1.5 mr-3 text-sm rounded-lg font-semibold ${
                             sortType === "desc"
-                                ? "bg-pink-500 "
+                                ? "bg-green-500 "
                                 : "bg-slate-700"
                         }`}
                         onClick={() => {
@@ -76,7 +76,7 @@ function ChannelVideos() {
                         type="button"
                         className={`px-3 py-1.5 text-sm rounded-lg font-semibold ${
                             sortType === "asc"
-                                ? "bg-pink-500 "
+                                ? "bg-green-500 "
                                 : "bg-slate-700 "
                         }`}
                         onClick={() => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import GuestComponent from "./GuestComponent";
 import { MdPlayCircleOutline } from "react-icons/md";
 
@@ -6,13 +6,13 @@ function GuestSubscriptions() {
     return (
         <GuestComponent
             title="Discover Your Favorite Videos"
-            subtitle="Sign in to explore, save, and enjoy content from your favorite creators—all in one place."
+            subtitle="Sign in to follow creators, save content, and never miss an update!"
             icon={
-                <span className="w-full h-full flex items-center p-4 pb-5">
-                    <MdPlayCircleOutline className="w-28 h-28 text-green-400" />
-                </span>
+                <div className="flex items-center justify-center w-full h-full p-4">
+                    <MdPlayCircleOutline size={112} className="text-green-400" />
+                </div>
             }
-            route="/subscriptions"
+            route="/login?redirect=/subscriptions"
         />
     );
 }

@@ -8,11 +8,11 @@ function GuestHistory() {
             title="Keep track of what you watch"
             subtitle="Sign in to see your watch history."
             icon={
-                <span className="w-full h-full flex items-center p-4 pb-5">
-                    <GoHistory className="w-32 h-32"/>
-                </span>
+                <div className="flex items-center justify-center w-full h-full p-4">
+                    <GoHistory size={128} className="text-green-400" />
+                </div>
             }
-            route="/history"
+            route="/login?redirect=/history" 
         />
     );
 }

@@ -106,14 +106,11 @@ function Tweet({ tweet, page = false }) {
 
     return (
         <li className="relative p-5 mb-5 bg-white/10 backdrop-blur-md rounded-xl border border-gray-600/50 shadow-lg hover:shadow-xl transition-all duration-300">
-            {/* Profile & Header */}
             <div className="flex items-start">
-                {/* Profile Image */}
                 <Link to={userData?._id === tweet?.owner?._id ? "" : "/channel/" + tweet.owner.username} className="relative w-12 h-12">
                     <img src={tweet.owner.avatar} alt="user" className="w-full h-full rounded-full object-cover border-2 border-gray-500 hover:border-green-400 transition-all duration-300" />
                 </Link>
 
-                {/* Tweet Content */}
                 <div className="ml-4 flex-grow">
                     <div className="flex justify-between items-center">
                         <div>
@@ -121,7 +118,6 @@ function Tweet({ tweet, page = false }) {
                             <p className="text-gray-400 text-xs">{getTimeDistanceToNow(tweet?.createdAt)}</p>
                         </div>
 
-                        {/* Menu */}
                         {tweet?.owner?._id === userData?._id && (
                             <div ref={ref} className="relative">
                                 <button onClick={() => setMenu(!menu)} className="p-2 hover:bg-gray-800/50 rounded-full transition-all duration-300">
@@ -137,7 +133,6 @@ function Tweet({ tweet, page = false }) {
                         )}
                     </div>
 
-                    {/* Tweet Content */}
                     {update ? (
                         <form onSubmit={handleSubmit(handleTweetUpdate)} className="mt-3">
                             <textarea {...register("newContent", { required: true })} className="w-full bg-gray-800 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300" rows="3" />
@@ -150,7 +145,6 @@ function Tweet({ tweet, page = false }) {
                         <p className="mt-2 text-gray-300 text-lg">{tweet?.content}</p>
                     )}
 
-                    {/* Like Button */}
                     <button onClick={toggleTweetLike} className="mt-3 flex items-center text-sm text-gray-400 hover:text-green-500 transition-all duration-300">
                         <span className={`w-5 h-5 transition-all ${tweet?.isLiked ? "animate-pulse text-green-500" : ""}`}>
                             {tweet?.isLiked ? <BiSolidLike /> : <BiLike />}

@@ -34,21 +34,23 @@ function VideoForm({ video = false }, ref) {
 
     useImperativeHandle(
         ref,
-        () => ({
-            open() {
-                setShowPopup(true);
-                dialog.current?.showModal();
-            },
-            close() {
-                dialog.current?.close();
-            },
-        }),
+        () => {
+            return {
+                open() {
+                    setShowPopup(true);
+                    dialog.current?.showModal();
+                },
+                close() {
+                    dialog.current.close();
+                },
+            };
+        },
         []
     );
 
     useEffect(() => {
         if (showPopup) {
-            dialog.current?.showModal();
+            dialog.current.showModal();
         }
     }, [showPopup]);
 
@@ -99,8 +101,7 @@ function VideoForm({ video = false }, ref) {
         }
     };
 
-
-    const handleVideo = (data) => {
+    const handleVideo = async (data) => {
         if (video) {
             updateVideo(data);
         } else {
@@ -116,84 +117,214 @@ function VideoForm({ video = false }, ref) {
                 createPortal(
                     <dialog
                         ref={dialog}
-                        className="backdrop:backdrop-blur-md max-w-xl w-full sm:w-[90%] lg:w-[40%] rounded-lg shadow-2xl"
+                        className="h-fit backdrop:backdrop-blur-lg lg:w-[40%] md:w-2/3 items-center"
                     >
-                        <UploadingVideo ref={uploadingDialog} video={video || getValues()} updating={!!video} />
-                        <UploadSuccess ref={successDialog} video={video || getValues()} updating={!!video} />
-
-                        <div className="bg-gray-900 p-6 text-white rounded-lg">
+                        <UploadingVideo
+                            ref={uploadingDialog}
+                            video={video || getValues()}
+                            updating={video ? true : false}
+                        />
+                        <UploadSuccess
+                            ref={successDialog}
+                            video={video || getValues()}
+                            updating={video ? true : false}
+                        />
+                        <div className="bg-black/85 p-2 text-white">
                             <form
                                 onSubmit={handleSubmit(handleVideo)}
-                                className="bg-gray-800 rounded-md shadow-lg p-5"
+                                className="h-fit border bg-zinc-950"
                             >
-                                <div className="flex items-center justify-between border-b pb-3">
-                                    <h2 className="text-2xl font-semibold text-blue-400">
+                                <div className="flex items-center justify-between border-b px-2 py-1 md:p-3">
+                                    <h2 className="text-xl font-semibold">
                                         {video ? "Update" : "Upload"} Video
                                     </h2>
                                     <button
                                         type="button"
+                                        title="Close"
+                                        autoFocus
                                         onClick={() => dialog.current.close()}
-                                        className="text-red-500 hover:text-red-700"
+                                        className="h-6 w-6 hover:text-red-600"
                                     >
-                                        <IoClose size={24} />
+                                        <IoClose className="w-6 h-6" />
                                     </button>
                                 </div>
 
-                                {!video && (
-                                    <div className="border-2 border-dashed border-blue-500 p-5 text-center mt-5 rounded-md">
-                                        <BsUpload size={40} className="mx-auto text-blue-400" />
-                                        <h6 className="font-semibold text-lg mt-2">Select Video to Upload</h6>
-                                        <p className="text-gray-400 text-sm">Your video will be published by default.</p>
-                                        <label htmlFor="upload-video" className="block mt-4 cursor-pointer bg-blue-600 px-4 py-2 rounded-md text-white font-semibold hover:bg-blue-500">
-                                            <input type="file" id="upload-video" className="sr-only" {...register("videoFile", { required: true })} />
-                                            Select File
+                                <div className="mx-auto flex w-full max-w-3xl flex-col gap-y-2 md:gap-y-3 p-4">
+                                    {!video && (
+                                        <>
+                                            <div className="w-full px-2 py-5 text-center">
+                                                <span className="mb-2 inline-block rounded-full bg-[#c3fadc] p-3 text-green-500">
+                                                    <BsUpload className="h-7 w-7" />
+                                                </span>
+                                                <h6 className="mb-1 font-semibold text-sm md:text-lg">
+                                                    Select video file to upload
+                                                </h6>
+                                                <p className="text-gray-400 text-sm">
+                                                    Your video will be publised
+                                                    by default after upload is
+                                                    complete.
+                                                </p>
+                                                <label
+                                                    htmlFor="upload-video"
+                                                    className="mt-3 inline-flex w-auto cursor-pointer items-center gap-x-2 bg-green-500 px-3 py-2 text-sm text-center font-semibold text-black transition-all duration-150 ease-in-out active:translate-x-[5px] active:translate-y-[5px]"
+                                                >
+                                                    <input
+                                                        type="file"
+                                                        id="upload-video"
+                                                        className="sr-only"
+                                                        {...register(
+                                                            "videoFile",
+                                                            {
+                                                                required: true,
+                                                                validate: (
+                                                                    file
+                                                                ) => {
+                                                                    const allowedExtensions =
+                                                                        [
+                                                                            "video/mp4",
+                                                                        ];
+                                                                    const fileType =
+                                                                        file[0]
+                                                                            .type;
+                                                                    return allowedExtensions.includes(
+                                                                        fileType
+                                                                    )
+                                                                        ? true
+                                                                        : "Invalid file type! Only .mp4 files are accepted";
+                                                                },
+                                                            }
+                                                        )}
+                                                    />
+                                                    Select File
+                                                </label>
+                                            </div>
+                                            {errors.videoFile?.type ===
+                                                "required" && (
+                                                <div className="text-red-500">
+                                                    VideoFile is required
+                                                </div>
+                                            )}
+                                            {errors.videoFile?.type ===
+                                                "validate" && (
+                                                <div className="text-red-500">
+                                                    {errors.videoFile.message}
+                                                </div>
+                                            )}
+                                        </>
+                                    )}
+
+                                    <div className="w-full">
+                                        <label
+                                            htmlFor="thumbnail"
+                                            className="mb-1 inline-block"
+                                        >
+                                            Thumbnail
+                                            {!video && (
+                                                <span className="text-red-500">
+                                                    *
+                                                </span>
+                                            )}
                                         </label>
-                                        {errors.videoFile && <p className="text-red-400 mt-2 text-sm">Video file is required</p>}
+                                        <input
+                                            type="file"
+                                            id="thumbnail"
+                                            className="w-full border p-1 file:mr-4 file:border-none cursor-pointer file:bg-green-500 file:px-3 file:py-1.5"
+                                            {...register("thumbnail", {
+                                                required: !video,
+                                                validate: (file) => {
+                                                    if (video) return true;
+                                                    if (!file[0]) return true;
+                                                    const allowedExtensions = [
+                                                        "image/jpeg",
+                                                        "image/png",
+                                                        "image/jpg",
+                                                    ];
+                                                    const fileType =
+                                                        file[0]?.type;
+                                                    return allowedExtensions.includes(
+                                                        fileType
+                                                    )
+                                                        ? true
+                                                        : "Invalid file type! Only .png .jpg and .jpeg files are accepted";
+                                                },
+                                            })}
+                                        />
                                     </div>
-                                )}
+                                    {errors.thumbnail?.type === "required" && (
+                                        <div className="text-red-500">
+                                            Thumbnail is required
+                                        </div>
+                                    )}
+                                    {errors.thumbnail?.type === "validate" && (
+                                        <div className="text-red-500">
+                                            {errors.thumbnail.message}
+                                        </div>
+                                    )}
 
-                                <div className="mt-5">
-                                    <label htmlFor="thumbnail" className="block text-lg font-medium">
-                                        Thumbnail {video ? "" : <span className="text-red-500">*</span>}
-                                    </label>
-                                    <input
-                                        type="file"
-                                        id="thumbnail"
-                                        className="w-full border p-2 rounded-md bg-gray-700 text-white"
-                                        {...register("thumbnail", { required: !video })}
-                                    />
-                                    {errors.thumbnail && <p className="text-red-400 mt-1 text-sm">Thumbnail is required</p>}
-                                </div>
+                                    <div className="w-full">
+                                        <label
+                                            htmlFor="title"
+                                            className="mb-1 inline-block"
+                                        >
+                                            Title
+                                            <span className="text-red-500">
+                                                *
+                                            </span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            placeholder="Add video title"
+                                            id="title"
+                                            className="w-full border focus:border-green-400 bg-transparent px-2 py-1 outline-none"
+                                            {...register("title", {
+                                                required: true,
+                                            })}
+                                        />
+                                    </div>
+                                    {errors.title?.type === "required" && (
+                                        <div className="text-red-500">
+                                            Title is required
+                                        </div>
+                                    )}
 
-                                <div className="mt-5">
-                                    <label htmlFor="title" className="block text-lg font-medium">
-                                        Title <span className="text-red-500">*</span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="title"
-                                        className="w-full border p-2 rounded-md bg-gray-700 text-white"
-                                        placeholder="Enter video title"
-                                        {...register("title", { required: true })}
-                                    />
-                                    {errors.title && <p className="text-red-400 mt-1 text-sm">Title is required</p>}
-                                </div>
+                                    <div className="w-full">
+                                        <label
+                                            htmlFor="desc"
+                                            className="mb-1 inline-block"
+                                        >
+                                            Description
+                                        </label>
+                                        <textarea
+                                            placeholder="Add some description"
+                                            id="desc"
+                                            className="h-24 md:h-32 w-full resize-none border focus:border-green-400 bg-transparent px-2 py-1 outline-none"
+                                            {...register("description")}
+                                        />
+                                    </div>
 
-                                <div className="mt-5">
-                                    <label htmlFor="desc" className="block text-lg font-medium">Description</label>
-                                    <textarea
-                                        id="desc"
-                                        className="w-full h-24 border p-2 rounded-md bg-gray-700 text-white"
-                                        placeholder="Write a brief description"
-                                        {...register("description")}
-                                    ></textarea>
-                                </div>
-
-                                <div className="mt-6 flex justify-between">
-                                    <button type="button" onClick={() => dialog.current.close()} className="px-4 py-2 border rounded-md text-gray-300 hover:bg-gray-700">Cancel</button>
-                                    <button type="submit" className="px-4 py-2 bg-blue-500 hover:bg-blue-400 text-white rounded-md font-semibold">
-                                        {video ? "Update" : "Publish"}
-                                    </button>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                reset();
+                                                dialog.current.close();
+                                            }}
+                                            className="border px-4 py-2 hover:bg-gray-800"
+                                        >
+                                            Cancel
+                                        </button>
+                                        <button
+                                            type="submit"
+                                            disabled={
+                                                errors.title ||
+                                                errors.videoFile ||
+                                                (!video && errors.thumbnail)
+                                            }
+                                            className="bg-green-600 px-4 py-2 text-black hover:font-semibold hover:border disabled:bg-green-700 disabled:cursor-not-allowed"
+                                        >
+                                            {video ? "Update" : "Publish"}
+                                        </button>
+                                    </div>
                                 </div>
                             </form>
                         </div>

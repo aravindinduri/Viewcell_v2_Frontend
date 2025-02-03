@@ -23,9 +23,11 @@ Viewcell_v2_Frontend/
 ├── src/                    # Main source code
 │   ├── components/         # Reusable React components
 │   ├── pages/              # Page-level components
+│   ├── hooks/              # Custom React hooks
 │   ├── assets/             # Project assets (icons, images, etc.)
-│   ├── App.js              # Root component
-│   └── index.js            # Application entry point
+│   ├── App.jsx             # Root component
+│   ├── main.jsx            # Application entry point
+│   └── index.css           # Global styles (Tailwind or custom CSS)
 ├── .gitignore              # Files to ignore in Git
 ├── eslint.config.js        # ESLint configuration
 ├── index.html              # Main HTML file
@@ -34,6 +36,7 @@ Viewcell_v2_Frontend/
 ├── postcss.config.js       # PostCSS configuration
 ├── tailwind.config.js      # Tailwind CSS configuration
 └── vite.config.js          # Vite configuration
+
 ```
 
 ## 🚀 Run Locally
@@ -77,3 +80,14 @@ This frontend interacts with the **Viewcell backend**, built using **Node.js and
 
 You can check out the live version of the application here:  
 [Viewcell Live Demo](https://viewcell.onrender.com)  
+
+## Screenshots
+
+![App Screenshot](https://i.ibb.co/KxCGLTVt/Screenshot-from-2025-02-03-15-14-51.png)
+
+![App Screenshot](https://i.ibb.co/svMLF09K/Screenshot-from-2025-02-03-15-16-42.png)
+
+
+![App Screenshot](https://i.ibb.co/hFc0WVCS/Screenshot-from-2025-02-03-15-18-30.png)
+
+![App Screenshot](https://i.ibb.co/Rk8VkySd/Screenshot-from-2025-02-03-15-20-42.png)

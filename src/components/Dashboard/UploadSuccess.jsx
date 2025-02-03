@@ -44,7 +44,7 @@ function UploadSuccess({ video, updating = false }, ref) {
                             </div>
                             <div className="mb-4 flex gap-x-2 border p-3">
                                 <div className="shrink-0">
-                                    <span className="inline-block w-full rounded-full bg-[#f8c3fa] p-1 text-pink-400">
+                                    <span className="inline-block w-full rounded-full bg-[#c8fac3] p-1 text-green-400">
                                         <TbMovie className="w-6 h-6" />
                                     </span>
                                 </div>
@@ -75,7 +75,7 @@ function UploadSuccess({ video, updating = false }, ref) {
                             <div className="flex justify-center items-center mx-auto">
                                     <button
                                         onClick={() => dialog.current.close()}
-                                         className="bg-pink-500 hover:border text-black font-semibold px-4 py-1.5"
+                                         className="bg-green-500 hover:border text-black font-semibold px-4 py-1.5"
                                     >
                                         Finish
                                     </button>

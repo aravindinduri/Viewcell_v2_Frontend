@@ -54,42 +54,51 @@ function VideoForm({ video = false }, ref) {
 
     const publishVideo = async (data) => {
         const formData = new FormData();
-        Object.keys(data).forEach((key) => formData.append(key, data[key]));
+        for (const key in data) {
+            formData.append(key, data[key]);
+        }
         formData.append("thumbnail", data.thumbnail[0]);
         formData.append("videoFile", data.videoFile[0]);
 
         try {
-            await axiosInstance.post("/videos", formData);
-            uploadingDialog.current.close();
-            successDialog.current.open();
-            reset();
-            dispatch(addVideoStats());
-            getChannelVideos(dispatch);
-            toast.success("Video uploaded successfully");
+            await axiosInstance.post("/videos", formData).then(() => {
+                uploadingDialog.current.close();
+                successDialog.current.open();
+                reset();
+                dispatch(addVideoStats());
+                getChannelVideos(dispatch);
+                toast.success("Video uploaded successfully");
+            });
         } catch (error) {
             uploadingDialog.current.close();
-            toast.error("Error while uploading video. Try again!");
-            console.error("Upload Error:", error);
+            toast.error("Error while uploading video. Try again!!");
+            console.log("Error uploading video", error);
         }
     };
 
     const updateVideo = async (data) => {
         const formData = new FormData();
-        Object.keys(data).forEach((key) => formData.append(key, data[key]));
+        for (const key in data) {
+            formData.append(key, data[key]);
+        }
         if (data.thumbnail) formData.append("thumbnail", data.thumbnail[0]);
 
         try {
-            await axiosInstance.patch(`/videos/${video._id}`, formData);
-            uploadingDialog.current.close();
-            successDialog.current.open();
-            reset();
-            getChannelVideos(dispatch);
+            await axiosInstance
+                .patch(`/videos/${video._id}`, formData)
+                .then(() => {
+                    uploadingDialog.current.close();
+                    successDialog.current.open();
+                    reset();
+                    getChannelVideos(dispatch);
+                });
         } catch (error) {
             uploadingDialog.current.close();
-            toast.error("Error while updating video. Try again!");
-            console.error("Update Error:", error);
+            toast.error("Error while updating video. Try again!!");
+            console.log("Error updating video", error);
         }
     };
+
 
     const handleVideo = (data) => {
         if (video) {
